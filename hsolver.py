@@ -13,6 +13,7 @@ class HcaptchaSolver:
         with open('./labels.txt', 'r', encoding='UTF8') as f:
             self.labels = {i: label.replace("\n", "").split(" ")[1] for i, label in enumerate(f.readlines())}
         self.model = load_model('keras_model.h5')
+        self.repetition = 5
         self.size = (224, 224)
 
     def _request(self, method, url, type_="", payload={}, headers={}, proxy=True):
@@ -59,7 +60,7 @@ class HcaptchaSolver:
         end = {'x': 600, 'y': 700}
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        for _ in range(4):
+        for _ in range(self.repetition):
             try:
                 headers = {'Authority': "hcaptcha.com", 'Accept': "application/json", "Accept-Language": "en-US,en;q=0.9", "Content-Type": "application/x-www-form-urlencoded", 'Origin': "https://newassets.hcaptcha.com", "Sec-Fetch-Site": "same-site", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Dest": "empty", "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.70 Whale/3.13.131.27 Safari/537.36'}
                 timestamp = int((time.time() * 1000) + round(random.random() * (120 - 30) + 30))
