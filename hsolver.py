@@ -66,17 +66,17 @@ class HcaptchaSolver:
 
                 resp = self._request('get', f'https://hcaptcha.com/checksiteconfig?host={host}&sitekey={site_key}&sc=1&swa=1', headers=headers)
                 if not resp or resp.status_code != 200:
-                    return False
+                    continue
 
                 mm = [[int(p['x']), int(p['y']), int(time.time() * 1000) + round(random.random() * (5000 - 2000) + 2000)] for p in path(start, end)]
                 hsw, version = loop.run_until_complete(self._get_hsw(resp.json()['c']['req']))
                 if not hsw:
-                    return False
+                    continue
 
                 payload = {'sitekey': site_key, 'host': host, 'hl': 'ko', 'motionData': json.dumps({'st': timestamp, 'dct': timestamp, 'mm': mm}), 'n': hsw, 'v': version, 'c': json.dumps(resp.json()['c'])}
                 get_task = self._request('post', f"https://hcaptcha.com/getcaptcha?s={site_key}", "data", payload=payload, headers=headers)
                 if not get_task or get_task.status_code != 200:
-                    return False
+                    continue
                 get_task = get_task.json()
                 topic = get_task['requester_question']['ko']
                 key = get_task['key']
@@ -92,7 +92,7 @@ class HcaptchaSolver:
                     img_key = img['task_key']
                     resp = self._request('get', img['datapoint_uri'], proxy=False)
                     if not resp:
-                        return
+                        continue
                     with open(f'./imgs/{filename}.png', 'wb') as f:
                         f.write(resp.content)
                     data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
@@ -109,19 +109,19 @@ class HcaptchaSolver:
 
                 resp = self._request('get', f'https://hcaptcha.com/checksiteconfig?host={host}&sitekey={site_key}&sc=1&swa=1', headers=headers)
                 if not resp:
-                    return False
+                    continue
 
                 mm = [[int(p['x']), int(p['y']), int(time.time() * 1000) + round(random.random() * (5000 - 2000) + 2000)] for p in path(start, end)]
                 hsw, version = loop.run_until_complete(self._get_hsw(resp.json()['c']['req']))
                 if not hsw:
-                    return False
+                    continue
 
                 payload = {'job_mode': get_task['request_type'], "answers": answer, "serverdomain": host, "sitekey": site_key, "motionData": json.dumps({'st': timestamp, 'dct': timestamp, 'mm': mm}), "n": hsw, "v": version, "c": json.dumps(resp.json()['c'])}
                 headers = {'Authority': "hcaptcha.com", 'Accept': "application/json", "Accept-Language": "en-US,en;q=0.9", "Content-Type": "application/json", 'Origin': "https://newassets.hcaptcha.com", "Sec-Fetch-Site": "same-site", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Dest": "empty", "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.70 Whale/3.13.131.27 Safari/537.36'}
 
                 resp = self._request('post', f"https://hcaptcha.com/checkcaptcha/{key}?s={site_key}", 'json', payload=payload, headers=headers)
                 if not resp:
-                    return False
+                    continue
 
                 if resp.json().get("generated_pass_UUID", None) is not None:
                     return resp.json()['generated_pass_UUID']
