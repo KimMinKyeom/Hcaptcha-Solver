@@ -2,8 +2,13 @@
 artificial intelligence to solve hcaptcha
 
 
-## Use
-```
+# Key Features
+- Fast and accurate AI (Learned with more than 30,000 images in total)
+- Proxy support (http)
+
+
+## Quick Example
+```py
 import hsolver, requests
 
 s = requests.session()
