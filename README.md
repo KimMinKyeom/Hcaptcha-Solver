@@ -1,13 +1,15 @@
 # Hcaptcha-Solver
 artificial intelligence to solve hcaptcha
 
+`Currently, hcaptcha has added some additional topics, so this code is not available on some sites or in certain cases - Patching`
+
 
 # Key Features
 - Fast and accurate AI (Learned with more than 30,000 images in total)
 - Proxy support (http)
 
 
-## Quick Example
+# Quick Example
 ```py
 import hsolver, requests
 
