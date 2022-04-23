@@ -1,5 +1,4 @@
 pyjwt
-jwt
 nest_asyncio
 pyppeteer_ghost_cursor
 pyppeteer
