@@ -1,0 +1,6 @@
+pyjwt
+jwt
+nest_asyncio
+pyppeteer_ghost_cursor
+pyppeteer
+urllib3==1.23
