@@ -1,20 +1,23 @@
-# Hcaptcha-Solver
-artificial intelligence to solve hcaptcha
+# Hcaptcha Solver
 
-`Currently, hcaptcha has added some additional topics, so this code is not available on some sites or in certain cases - Patching`
+> **⚠️ Caution:** It's currently blocked by a security update (they've added a different, more varied Turing test than before).
+
+Use AI to tackle and solve hcaptcha challenges seamlessly.
+
 
 
 # Key Features
-- Fast and accurate AI (Learned with more than 30,000 images in total)
-- Proxy support (http)
+- Robust AI Capability: Trained on a dataset of over 30,000 images ensuring speed and precision.
+- Proxy Support: Facilitates the use of HTTP proxies.
 
 
 # Quick Example
 ```py
 import hsolver, requests
 
-s = requests.session()
-# s.proxies.update({"http": "proxy", "https": "proxy"}) # If you want to generate many correct answer tokens due to request restrictions, we recommend using a proxy.
+session = requests.session()
+# Optional: Update with proxy details if needed
+# session.proxies.update({"http": "proxy_address", 'https': "proxy_address"})
 
-print(hsolver.HcaptchaSolver(s).solve("site key", "url"))  # Ex. '4c672d35-0701-42b2-88c3-78380b0db560', 'discord.com'
+print(hsolver.HcaptchaSolver(session).solve('site_key', 'host'))  # Ex.'4c672d35-0701-42b2-88c3-78380b0db560', 'discord.com'
 ```
